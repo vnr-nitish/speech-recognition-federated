@@ -1,10 +1,2 @@
-fastapi
-uvicorn
-tensorflow
-librosa
-numpy
-python-multipart
-soundfile
 streamlit
 requests
-sounddevice

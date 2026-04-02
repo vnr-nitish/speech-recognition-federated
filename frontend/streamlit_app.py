@@ -1,10 +1,14 @@
 import streamlit as st
 import requests
-import sounddevice as sd
-import soundfile as sf
-import numpy as np
 import tempfile
 import os
+
+try:
+    import sounddevice as sd
+    import soundfile as sf
+    HAS_MIC = True
+except ImportError:
+    HAS_MIC = False
 
 BACKEND_URL = "http://127.0.0.1:8000/predict"
 
@@ -41,34 +45,40 @@ if uploaded_file is not None:
     os.remove(temp_path)
 
 # ----------------------
-# Microphone Option
+# Microphone Option (local only)
 # ----------------------
 
 st.subheader("🎙 Record from Microphone")
 
-duration = st.slider("Recording Duration (seconds)", 2, 10, 5)
+if not HAS_MIC:
+    st.info(
+        "Microphone recording is only available when running "
+        "locally with the sounddevice and soundfile packages installed."
+    )
+else:
+    duration = st.slider("Recording Duration (seconds)", 2, 10, 5)
 
-if st.button("Start Recording"):
-    st.info("Recording...")
-    recording = sd.rec(int(duration * 22050), samplerate=22050, channels=1)
-    sd.wait()
-    st.success("Recording complete!")
+    if st.button("Start Recording"):
+        st.info("Recording...")
+        recording = sd.rec(int(duration * 22050), samplerate=22050, channels=1)
+        sd.wait()
+        st.success("Recording complete!")
 
-    temp_file = "temp_record.wav"
-    sf.write(temp_file, recording, 22050)
+        temp_file = "temp_record.wav"
+        sf.write(temp_file, recording, 22050)
 
-    with open(temp_file, "rb") as f:
-        response = requests.post(
-            BACKEND_URL,
-            files={"file": f}
-        )
+        with open(temp_file, "rb") as f:
+            response = requests.post(
+                BACKEND_URL,
+                files={"file": f}
+            )
 
-    if response.status_code == 200:
-        result = response.json()
-        st.success(f"Predicted Emotion: {result['predicted_emotion']}")
-        st.write("Confidence:", round(result["confidence"], 4))
-        st.bar_chart(result["all_probabilities"])
-    else:
-        st.error("Prediction failed.")
+        if response.status_code == 200:
+            result = response.json()
+            st.success(f"Predicted Emotion: {result['predicted_emotion']}")
+            st.write("Confidence:", round(result["confidence"], 4))
+            st.bar_chart(result["all_probabilities"])
+        else:
+            st.error("Prediction failed.")
 
-    os.remove(temp_file)
+        os.remove(temp_file)
