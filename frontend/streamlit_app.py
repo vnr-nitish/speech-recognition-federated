@@ -10,7 +10,7 @@ try:
 except ImportError:
     HAS_MIC = False
 
-BACKEND_URL = "http://127.0.0.1:8000/predict"
+BACKEND_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000/predict")
 
 st.set_page_config(page_title="Speech Emotion Detection", layout="centered")
 
