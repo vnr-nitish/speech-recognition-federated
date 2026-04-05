@@ -6,15 +6,15 @@ import os
 BACKEND_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000/predict")
 
 st.set_page_config(
-    page_title="Emotion Recognition from Speech",
+    page_title="Emotion recognition from speech using multi headed attention and deep learning/federated learning",
     layout="centered",
 )
 
-st.title("🎤 Emotion Recognition from Speech")
-st.markdown(
-    "Upload a WAV file to detect the emotion using "
-    "multi‑headed attention and deep learning / federated learning."
+st.title(
+    "🎤 Emotion recognition from speech using multi headed attention and "
+    "deep learning/federated learning"
 )
+st.markdown("Upload a WAV file to detect the underlying emotion.")
 
 # ----------------------
 # Upload Option
