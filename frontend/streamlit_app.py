@@ -14,13 +14,13 @@ st.title(
     "🎤 Emotion recognition from speech using multi headed attention and "
     "deep learning/federated learning"
 )
-st.markdown("Upload a WAV file to detect the underlying emotion.")
+st.markdown("Provide a speech recording in WAV format to analyze its emotion.")
 
 # ----------------------
 # Upload Option
 # ----------------------
 
-uploaded_file = st.file_uploader("Upload a WAV file", type=["wav"])
+uploaded_file = st.file_uploader("", type=["wav"])
 
 if uploaded_file is not None:
     if st.button("Predict Emotion"):
