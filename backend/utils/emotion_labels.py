@@ -1,12 +1,12 @@
 # utils/emotion_labels.py
 
 EMOTION_MAP = {
-    0: "Neutral",
+    0: "Angry",
     1: "Calm",
-    2: "Happy",
-    3: "Sad",
-    4: "Angry",
-    5: "Fearful",
-    6: "Disgust",
-    7: "Surprised"
+    2: "Disgust",
+    3: "Fearful",
+    4: "Happy",
+    5: "Neutral",
+    6: "Sad",
+    7: "Surprised",
 }
