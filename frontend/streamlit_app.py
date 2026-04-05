@@ -3,7 +3,17 @@ import requests
 import tempfile
 import os
 
-BACKEND_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000/predict")
+
+# Decide behavior based on environment.
+# LOCAL (default): show backend URL input + recording option.
+# CLOUD (Streamlit Cloud): hide backend URL input and recording option.
+IS_CLOUD = os.getenv("STREAMLIT_CLOUD", "false").lower() == "true"
+
+DEFAULT_LOCAL_BACKEND = os.getenv("BACKEND_URL", "http://127.0.0.1:8000/predict")
+DEFAULT_CLOUD_BACKEND = os.getenv(
+    "BACKEND_URL_CLOUD",
+    "https://speech-recognition-federated.onrender.com/predict",
+)
 
 st.set_page_config(
     page_title="Emotion recognition from speech using multi headed attention and deep learning/federated learning",
@@ -16,13 +26,23 @@ st.title(
 )
 st.markdown("Provide a speech recording in WAV format to analyze its emotion.")
 
-backend_url = st.text_input("Backend /predict URL", value=BACKEND_URL)
+if IS_CLOUD:
+    # Fixed backend URL in Streamlit Cloud: no editable field.
+    backend_url = DEFAULT_CLOUD_BACKEND
+else:
+    # Local development: allow overriding the backend URL.
+    backend_url = st.text_input("Backend /predict URL", value=DEFAULT_LOCAL_BACKEND)
 
 # ----------------------
 # Input options
 # ----------------------
 
-mode = st.radio("Input source", ["Upload WAV", "Record from microphone"], horizontal=True)
+if IS_CLOUD:
+    # On Streamlit Cloud we only allow upload.
+    mode = "Upload WAV"
+else:
+    # Locally allow either upload or microphone recording.
+    mode = st.radio("Input source", ["Upload WAV", "Record from microphone"], horizontal=True)
 audio_bytes = None
 audio_name = "audio.wav"
 
