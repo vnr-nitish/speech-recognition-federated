@@ -26,9 +26,28 @@ st.title(
 )
 st.markdown("Provide a speech recording in WAV format to analyze its emotion.")
 
+
+def warmup_backend(url: str) -> None:
+    """Best-effort warmup to reduce cold-start timeouts on Render.
+
+    Called only on Streamlit Cloud. We hit the backend root (GET /)
+    with a small timeout, ignoring failures; this is just to wake
+    the container before the first /predict call.
+    """
+
+    try:
+        base_url = url.rsplit("/predict", 1)[0]
+        requests.get(base_url or url, timeout=5)
+    except Exception:
+        # Ignore; regular prediction path will handle real errors.
+        pass
+
 if IS_CLOUD:
     # Fixed backend URL in Streamlit Cloud: no editable field.
     backend_url = DEFAULT_CLOUD_BACKEND
+    # Try to warm up the backend once when the page loads.
+    with st.spinner("Warming up backend (first request may take longer)..."):
+        warmup_backend(backend_url)
 else:
     # Local development: allow overriding the backend URL.
     backend_url = st.text_input("Backend /predict URL", value=DEFAULT_LOCAL_BACKEND)
@@ -72,7 +91,7 @@ if audio_bytes is not None:
                     response = requests.post(
                         backend_url,
                         files={"file": (audio_name, f, "audio/wav")},
-                        timeout=60,
+                        timeout=180,
                     )
 
                 if response.status_code == 200:
