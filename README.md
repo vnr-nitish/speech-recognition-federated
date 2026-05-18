@@ -88,9 +88,8 @@ Notes:
 - Add a license file (e.g., MIT) if you want open-source distribution. Replace this block with the chosen license details.
 
 ## Author
-- Name: hp
-- Contact: hp@example.com
+- Name: Vinnakota Nitish Raj
+- LinkedIn: https://www.linkedin.com/in/vnr-nitish
 
 ## Acknowledgements
 - Mention any datasets, libraries, or collaborators used.
-# speech-recognition-federated
