@@ -90,6 +90,3 @@ Notes:
 ## Author
 - Name: Vinnakota Nitish Raj
 - LinkedIn: https://www.linkedin.com/in/vnr-nitish
-
-## Acknowledgements
-- Mention any datasets, libraries, or collaborators used.
