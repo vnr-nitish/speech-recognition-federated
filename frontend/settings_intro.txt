@@ -1,0 +1,1 @@
+Emotion Detection App: locally analyze audio to detect speaker emotion using a lightweight Keras model.
