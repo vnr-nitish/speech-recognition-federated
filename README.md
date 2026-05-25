@@ -1,4 +1,4 @@
-# Emotion Detection App
+# Speech Emotion Recognition with Federated Learning
 
 A lightweight local application that detects emotions from audio using a pre-trained Keras model. It includes a backend service and a Streamlit frontend for recording/uploading audio, audio preprocessing utilities, and a bundled model for inference.
 
